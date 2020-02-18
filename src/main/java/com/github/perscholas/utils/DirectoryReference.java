@@ -10,7 +10,7 @@ import java.io.File;
 public enum DirectoryReference {
     RESOURCE_DIRECTORY(new StringBuilder()
             .append(System.getProperty("user.dir")) // local directory
-            .append("/src/resources/")
+            .append("/src/main/resources/")
             .toString());
 
     private final String path;
