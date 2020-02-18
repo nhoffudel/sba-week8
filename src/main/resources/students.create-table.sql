@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `students`;
+DROP TABLE IF EXISTS `Student`;
 
 CREATE TABLE `students` (
   `email` varchar(50) NOT NULL,

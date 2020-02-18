@@ -27,7 +27,7 @@ public class CourseService implements CourseDao {
 
     @Override
     public List<CourseInterface> getAllCourses() {
-        ResultSet result = dbc.executeQuery("SELECT * FROM courses");
+        ResultSet result = dbc.executeQuery("SELECT * FROM Course");
         List<CourseInterface> list = new ArrayList<>();
         try {
             while (result.next()) {

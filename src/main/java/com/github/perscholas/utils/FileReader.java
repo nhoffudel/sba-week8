@@ -18,31 +18,14 @@ public class FileReader {
         this.filename = filename;
     }
 
-//    @Override
-//    public String toString() {
-//        ClassLoader classLoader = getClass().getClassLoader();
-//        File file = new File(classLoader.getResource(filename).getFile());
-//        StringBuilder result = new StringBuilder();
-//        try (Scanner scanner = new Scanner(file)) {
-//            while (scanner.hasNextLine()) {
-//                String line = scanner.nextLine();
-//                result.append(line).append("\n");
-//            }
-//        } catch (IOException e) {
-//            throw new Error(e);
-//        }
-//        return result.toString();
-//    }
-
     @Override
     public String toString() {
         try {
-            byte[] readAllBytes = java.nio.file.Files.readAllBytes(Paths.get(filename));
-            return new String(readAllBytes);
+            byte[] readAllBytes = java.nio.file.Files.readAllBytes(Paths.get( filename ));
+            return new String( readAllBytes );
         } catch (IOException e) {
             throw new Error(e);
         }
     }
-
 }
 

@@ -18,6 +18,7 @@ public class JdbcConfigurator {
     }
 
     private static void registerJdbcDriver() {
+        // Attempt to register JDBC Driver
         try {
             DriverManager.registerDriver(Driver.class.newInstance());
         } catch (InstantiationException | IllegalAccessException | SQLException e1) {

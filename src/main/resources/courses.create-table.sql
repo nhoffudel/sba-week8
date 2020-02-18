@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS `courses`;
+DROP TABLE IF EXISTS `Course`;
 
 CREATE TABLE `courses` (
   `id` int NOT NULL,
