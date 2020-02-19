@@ -72,7 +72,7 @@ public class SchoolManagementSystem implements Runnable {
         StringBuilder prompt = new StringBuilder();
         prompt.append("Welcome to the Course Registration Dashboard!")
                 .append("\nFrom here, enter the ID of any of the following options:");
-        for (CourseInterface c : courses) prompt.append("\n" + c.getId() + " - " + c.getName());
+        for (CourseInterface c : courses) prompt.append("\n" + c.getId() + " - " + c.getName() + " Instructor: " + c.getInstructor());
         return console.getIntegerInput(prompt.toString());
     }
 }
