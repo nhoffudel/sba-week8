@@ -2,11 +2,9 @@ package com.github.perscholas.service;
 
 import com.github.perscholas.DatabaseConnection;
 import com.github.perscholas.dao.CourseDao;
-import com.github.perscholas.dao.StudentDao;
 import com.github.perscholas.model.Course;
 import com.github.perscholas.model.CourseInterface;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;

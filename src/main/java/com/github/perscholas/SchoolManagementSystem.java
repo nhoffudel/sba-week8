@@ -1,7 +1,6 @@
 package com.github.perscholas;
 
 import com.github.perscholas.dao.CourseDao;
-import com.github.perscholas.dao.StudentDao;
 import com.github.perscholas.model.CourseInterface;
 import com.github.perscholas.service.CourseService;
 import com.github.perscholas.service.StudentService;
@@ -15,7 +14,7 @@ public class SchoolManagementSystem implements Runnable {
     public void run() {
         CourseDao courseService = new CourseService(DatabaseConnection.MANAGEMENT_SYSTEM);
         List<Integer> listOfCoursesIds = ((CourseService) courseService).getAllCourseIDs();
-        boolean running = true;
+        while (true) {
             String smsDashboardInput = getSchoolManagementSystemDashboardInput();
             if ("login".equals(smsDashboardInput)) {
                 StudentService studentService = new StudentService();
@@ -39,18 +38,15 @@ public class SchoolManagementSystem implements Runnable {
                                 studentService.registerStudentToCourse(studentEmail, courseId);
                             else System.out.println(name + " is already registered for that course");
                         }
-                        else if ("logout".equals(studentDashboardInput)){
-                            loggedIn = false;
-                            running = false;
-                        }
+                        else if ("logout".equals(studentDashboardInput)) loggedIn = false;
                         else System.out.println("Invalid input");
                     }
-                    System.out.println("You are logged out, quitting");
-                }
-                else System.out.println("Invalid login, quitting");
+                    System.out.println("You are logged out");
+                } else System.out.println("Invalid login");
             }
-            else if ("logout".equals(smsDashboardInput)) System.out.println("You are not logged in, quitting");
-            else System.out.println("Invalid input, quitting");
+            else if ("logout".equals(smsDashboardInput)) System.out.println("You are not logged in");
+            else System.out.println("Invalid input");
+        }
     }
 
     private String getSchoolManagementSystemDashboardInput() {
@@ -72,11 +68,11 @@ public class SchoolManagementSystem implements Runnable {
 
     private Integer getCourseRegistryInput() {
         CourseDao courseService = new CourseService(DatabaseConnection.MANAGEMENT_SYSTEM);
-        List<Integer> listOfCoursesIds = ((CourseService) courseService).getAllCourseIDs();
-        return console.getIntegerInput(new StringBuilder()
-                .append("Welcome to the Course Registration Dashboard!")
-                .append("\nFrom here, you can select any of the following options:")
-                .append("\n\t" + listOfCoursesIds.toString())
-                .toString());
+        List<CourseInterface> courses = ((CourseService) courseService).getAllCourses();
+        StringBuilder prompt = new StringBuilder();
+        prompt.append("Welcome to the Course Registration Dashboard!")
+                .append("\nFrom here, enter the ID of any of the following options:");
+        for (CourseInterface c : courses) prompt.append("\n" + c.getId() + " - " + c.getName());
+        return console.getIntegerInput(prompt.toString());
     }
 }

@@ -2,9 +2,10 @@ package com.github.perscholas;
 
 import com.github.perscholas.utils.ConnectionBuilder;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by leon on 2/18/2020.
@@ -12,7 +13,7 @@ import java.util.List;
 public enum DatabaseConnection {
     MANAGEMENT_SYSTEM(new ConnectionBuilder()
             .setUser("root")
-            .setPassword("toor")
+            .setPassword("toor") //necessary to run on my machine
             .setPort(3306)
             .setDatabaseVendor("mariadb")
             .setHost("127.0.0.1"));

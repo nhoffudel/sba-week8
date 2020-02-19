@@ -1,10 +1,5 @@
 package com.github.perscholas.model;
 
-import com.github.perscholas.dao.CourseDao;
-import com.github.perscholas.service.CourseService;
-
-import java.util.List;
-
 // TODO - Annotate and Implement respective interface and define behaviors
 public class Course implements CourseInterface {
     private Integer id;
