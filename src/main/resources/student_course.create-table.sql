@@ -1,0 +1,1 @@
+CREATE TABLE if not exists management_system.Student_course(transactid int not null auto_increment primary key, studentemail VARCHAR(50) not null, courseid int not null, FOREIGN KEY (studentemail) REFERENCES Student(email), FOREIGN KEY (courseid) REFERENCES Course(id));

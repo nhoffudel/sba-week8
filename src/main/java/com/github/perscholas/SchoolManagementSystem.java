@@ -1,32 +1,56 @@
 package com.github.perscholas;
 
+import com.github.perscholas.dao.CourseDao;
 import com.github.perscholas.dao.StudentDao;
+import com.github.perscholas.model.CourseInterface;
+import com.github.perscholas.service.CourseService;
 import com.github.perscholas.service.StudentService;
 import com.github.perscholas.utils.IOConsole;
-
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SchoolManagementSystem implements Runnable {
     private static final IOConsole console = new IOConsole();
 
     @Override
     public void run() {
-        String smsDashboardInput = getSchoolManagementSystemDashboardInput();
-        if ("login".equals(smsDashboardInput)) {
-            StudentDao studentService = new StudentService(DatabaseConnection.MYSQL);
-            String studentEmail = console.getStringInput("Enter your email:");
-            String studentPassword = console.getStringInput("Enter your password:");
-            Boolean isValidLogin = studentService.validateStudent(studentEmail, studentPassword);
-            if (isValidLogin) {
-                String studentDashboardInput = getStudentDashboardInput();
-                if ("register".equals(studentDashboardInput)) {
-                    Integer courseId = getCourseRegistryInput();
-                    studentService.registerStudentToCourse(studentEmail, courseId);
+        CourseDao courseService = new CourseService(DatabaseConnection.MANAGEMENT_SYSTEM);
+        List<Integer> listOfCoursesIds = ((CourseService) courseService).getAllCourseIDs();
+        boolean running = true;
+            String smsDashboardInput = getSchoolManagementSystemDashboardInput();
+            if ("login".equals(smsDashboardInput)) {
+                StudentService studentService = new StudentService();
+                String studentEmail = console.getStringInput("Enter your email:");
+                String studentPassword = console.getStringInput("Enter your password:");
+                Boolean isValidLogin = studentService.validateStudent(studentEmail, studentPassword);
+                if (isValidLogin) {
+                    boolean loggedIn = true;
+                    while (loggedIn) {
+                        String name = studentService.getStudentByEmail(studentEmail).getName();
+                        System.out.println(name + " is registered for these courses: ");
+                        List<CourseInterface> courses = studentService.getStudentCourses(studentEmail);
+                        for (CourseInterface c : courses)
+                            System.out.println("Course ID: " + c.getId() + " Course name: " + c.getName() + " Instructor: " + c.getInstructor());
+                        String studentDashboardInput = getStudentDashboardInput();
+                        if ("register".equals(studentDashboardInput)) {
+                            Integer courseId = getCourseRegistryInput();
+                            if (!listOfCoursesIds.contains(courseId))
+                                System.out.println(courseId + " is not a valid course ID");
+                            else if (!studentService.registeredOrNot(studentEmail, courseId))
+                                studentService.registerStudentToCourse(studentEmail, courseId);
+                            else System.out.println(name + " is already registered for that course");
+                        }
+                        else if ("logout".equals(studentDashboardInput)){
+                            loggedIn = false;
+                            running = false;
+                        }
+                        else System.out.println("Invalid input");
+                    }
+                    System.out.println("You are logged out, quitting");
                 }
+                else System.out.println("Invalid login, quitting");
             }
-        }
+            else if ("logout".equals(smsDashboardInput)) System.out.println("You are not logged in, quitting");
+            else System.out.println("Invalid input, quitting");
     }
 
     private String getSchoolManagementSystemDashboardInput() {
@@ -47,7 +71,8 @@ public class SchoolManagementSystem implements Runnable {
 
 
     private Integer getCourseRegistryInput() {
-        List<Integer> listOfCoursesIds = new ArrayList<>();
+        CourseDao courseService = new CourseService(DatabaseConnection.MANAGEMENT_SYSTEM);
+        List<Integer> listOfCoursesIds = ((CourseService) courseService).getAllCourseIDs();
         return console.getIntegerInput(new StringBuilder()
                 .append("Welcome to the Course Registration Dashboard!")
                 .append("\nFrom here, you can select any of the following options:")

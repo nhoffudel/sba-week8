@@ -1,8 +1,2 @@
-DROP TABLE IF EXISTS `Course`;
+CREATE TABLE if not exists management_system.Course(id int not null primary key, name VARCHAR(50) not null, instructor VARCHAR(50) not null);
 
-CREATE TABLE `courses` (
-  `id` int NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `instructor` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;

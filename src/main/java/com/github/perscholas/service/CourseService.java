@@ -22,12 +22,12 @@ public class CourseService implements CourseDao {
     }
 
     public CourseService() {
-        this(DatabaseConnection.MYSQL);
+        this(DatabaseConnection.MANAGEMENT_SYSTEM);
     }
 
     @Override
     public List<CourseInterface> getAllCourses() {
-        ResultSet result = dbc.executeQuery("SELECT * FROM Course");
+        ResultSet result = dbc.executeQuery("SELECT * FROM course");
         List<CourseInterface> list = new ArrayList<>();
         try {
             while (result.next()) {
@@ -36,6 +36,20 @@ public class CourseService implements CourseDao {
                 String instructor = result.getString("instructor");
                 CourseInterface student = new Course(id, name, instructor);
                 list.add(student);
+            }
+        } catch(SQLException se) {
+            throw new Error(se);
+        }
+
+        return list;
+    }
+
+    public List<Integer> getAllCourseIDs() {
+        ResultSet result = dbc.executeQuery("SELECT * FROM course");
+        List<Integer> list = new ArrayList<>();
+        try {
+            while (result.next()) {
+                list.add(result.getInt("id"));
             }
         } catch(SQLException se) {
             throw new Error(se);
